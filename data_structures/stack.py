@@ -7,14 +7,15 @@ class Stack:
     def __init__(self):
         self.items = list()
 
+    def __len__(self):
+        return len(self.items)
+
     def push(self, item):
         self.items.append(item)
 
     def pop(self):
-        if self.items:
+        if not self.is_empty():
             return self.items.pop()
-        else:
-            return "Stack is empty"
 
     def is_empty(self):
         return len(self.items) == 0

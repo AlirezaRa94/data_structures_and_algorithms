@@ -57,6 +57,9 @@ class CircularLinkedList:
         print()
 
     def delete_head(self):
+        """
+        This method will remove the head of the linked list
+        """
         if len(self) < 2:
             self.head = None
         else:
@@ -155,6 +158,11 @@ class CircularLinkedList:
 
     @staticmethod
     def is_circular_linked_list(input_list):
+        """
+        This method will check that if the linked list is circular or not
+        :param input_list: The given linked list
+        :return: A boolean that determine the status of the linked list
+        """
         cur = input_list.head
         while cur.next:
             cur = cur.next
