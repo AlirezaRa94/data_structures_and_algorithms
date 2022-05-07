@@ -1,92 +1,100 @@
-class AVLTree:
-    def __init__(self):
-        self.root = None
+from data_structures.trees.binary_search_tree import BinarySearchTree
 
-    class AVLNode:
+
+class AVLTree(BinarySearchTree):
+    class Node(BinarySearchTree.Node):
         def __init__(self, value):
-            self.value = value
-            self.left_child = None
-            self.right_child = None
+            super().__init__(value)
             self.height = 0
 
         def __str__(self):
             return "Value = " + str(self.value)
 
-    @staticmethod
-    def _height(node: AVLNode):
-        return -1 if not node else node.height
+    def _height(self, node: Node):
+        if not node:
+            return -1
+        return node.height
 
-    def _set_height(self, node: AVLNode):
-        node.height = max(self._height(node.right_child), self._height(node.left_child)) + 1
+    def _set_height(self, node: Node):
+        node.height = 1 + max(
+            self._height(node.right), self._height(node.left)
+        )
 
-    def _balance_factor(self, node: AVLNode):
-        return 0 if not node else self._height(node.left_child) - self._height(node.right_child)
+    def _balance_factor(self, node: Node):
+        if not node:
+            return 0
+        return self._height(node.left) - self._height(node.right)
 
-    def is_left_heavy(self, node: AVLNode):
+    def is_left_heavy(self, node: Node):
         return self._balance_factor(node) > 1
 
-    def is_right_heavy(self, node: AVLNode):
+    def is_right_heavy(self, node: Node):
         return self._balance_factor(node) < -1
 
-    def _left_rotate(self, root: AVLNode):
-        new_root = root.right_child
-        root.right_child = new_root.left_child
-        new_root.left_child = root
+    def _left_rotate(self, root: Node):
+        new_root = root.right
+        root.right = new_root.left
+        new_root.left = root
 
         self._set_height(root)
         self._set_height(new_root)
 
         return new_root
 
-    def _right_rotate(self, root: AVLNode):
-        new_root = root.left_child
-        root.left_child = new_root.right_child
-        new_root.right_child = root
+    def _right_rotate(self, root: Node):
+        new_root = root.left
+        root.left = new_root.right
+        new_root.right = root
 
         self._set_height(root)
         self._set_height(new_root)
 
         return new_root
 
-    def _balance(self, root: AVLNode):
+    def _balance(self, root: Node):
         if self.is_left_heavy(root):
-            print(f"{root.value} is heavy left.")
-            if self._balance_factor(root.left_child) < 0:
-                root.left_child = self._left_rotate(root.left_child)
+            print(f"{root.value} is left heavy.")
+            # We need to check that if the left node is right heavy or not?
+            # If so, first we need a left rotate at left node
+            if self._balance_factor(root.left) < 0:
+                root.left = self._left_rotate(root.left)
             root = self._right_rotate(root)
         elif self.is_right_heavy(root):
-            print(f"{root.value} is heavy right.")
-            if self._balance_factor(root.right_child) > 0:
-                root.right_child = self._right_rotate(root.right_child)
+            print(f"{root.value} is right heavy.")
+            # We need to check that if the right node is left heavy or not?
+            # If so, first we need a right rotate at right node
+            if self._balance_factor(root.right) > 0:
+                root.right = self._right_rotate(root.right)
             root = self._left_rotate(root)
         return root
 
     def insert(self, value):
         self.root = self._insert(self.root, value)
 
-    def _insert(self, root: AVLNode, value: int):
+    def _insert(self, root: Node, value: int):
         if not root:
-            return self.AVLNode(value)
+            return self.Node(value)
 
         if value < root.value:
-            root.left_child = self._insert(root.left_child, value)
+            root.left = self._insert(root.left, value)
         elif value > root.value:
-            root.right_child = self._insert(root.right_child, value)
+            root.right = self._insert(root.right, value)
         else:
-            raise ValueError("This value already exists in tree!")
+            raise ValueError("This value already exists in the tree!")
 
         self._set_height(root)
 
         return self._balance(root)
 
 
-t = AVLTree()
-t.insert(10)
-t.insert(20)
-t.insert(30)
-t.insert(15)
-print(t.root.height)
-print(t.root)
-print(t.root.right_child)
-print(t.root.left_child)
-print(t.root.left_child.right_child)
+if __name__ == "__main__":
+    t = AVLTree(30)
+    t.insert(15)
+    t.insert(18)
+    t.insert(10)
+    t.insert(16)
+    t.insert(7)
+    t.insert(8)
+    t.print_tree(traversal_type="inorder")
+    print(t.is_balanced())
+    print(t.is_perfect())

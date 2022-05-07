@@ -28,14 +28,15 @@ class Stack:
         return self.items
 
 
-myStack = Stack()
-print(myStack.pop())
-print(myStack.is_empty())
-myStack.push("A")
-myStack.push("B")
-print(myStack.get_stack())
-myStack.push("C")
-print(myStack.get_stack())
-myStack.pop()
-print(myStack.get_stack())
-print(myStack.is_empty())
+if __name__ == "__main__":
+    myStack = Stack()
+    print(myStack.pop())
+    print(myStack.is_empty())
+    myStack.push("A")
+    myStack.push("B")
+    print(myStack.get_stack())
+    myStack.push("C")
+    print(myStack.get_stack())
+    myStack.pop()
+    print(myStack.get_stack())
+    print(myStack.is_empty())
