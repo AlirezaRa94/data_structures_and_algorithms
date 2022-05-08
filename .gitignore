@@ -1,4 +1,4 @@
 .idea/
-test*.py
+console*.py
 __pycache__
 _trial_temp/
