@@ -33,16 +33,17 @@ class TestHeap(TestCase):
     def test_remove(self):
         self.insert_items()
         self.assertEqual(self.heap.size, 9)
-        self.heap.remove()
+        removed_item = self.heap.remove()
+        self.assertEqual(removed_item, max(self.sample_data))
         self.assertEqual(self.heap.size, 8)
-        self.assertEqual(self.heap.heap, [15, 12, 9, 8, 10, 3, 4, 1])
+        self.assertEqual(self.heap.heap[0], 15)
 
     def test_heap_sort_asc(self):
         self.assertEqual(self.heap.size, 0)
-        sorted_data = self.heap.heap_sort_asc(self.sample_data)
+        sorted_data = self.heap.heap_sort_asc([*self.sample_data])
         self.assertEqual(sorted_data, sorted(self.sample_data))
 
     def test_heap_sort_desc(self):
         self.assertEqual(self.heap.size, 0)
-        sorted_data = self.heap.heap_sort_desc(self.sample_data)
+        sorted_data = self.heap.heap_sort_desc([*self.sample_data])
         self.assertEqual(sorted_data, sorted(self.sample_data, reverse=True))

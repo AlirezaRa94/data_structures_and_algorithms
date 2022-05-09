@@ -81,11 +81,11 @@ class Heap:
             raise IndexError("Heap is empty!")
         # We should remove the root and replace it with the last element
         self._swap(0, -1)
-        self.heap.pop()
+        removed_item = self.heap.pop()
         self.size -= 1
         if self.size > 0:
             self._bubble_down()
-        return self.heap
+        return removed_item
 
     def heap_sort_asc(self, numbers: list):
         self.heap = list()
@@ -93,7 +93,7 @@ class Heap:
         for number in numbers:
             self.insert(number)
         for i in range(n):
-            numbers[i] = self.remove()
+            numbers[n - 1 - i] = self.remove()
         return numbers
 
     def heap_sort_desc(self, numbers: list):
@@ -102,5 +102,5 @@ class Heap:
         for number in numbers:
             self.insert(number)
         for i in range(n):
-            numbers[n - 1 - i] = self.remove()
+            numbers[i] = self.remove()
         return numbers
