@@ -1,3 +1,4 @@
+import heapq
 from unittest import TestCase
 
 from data_structures.trees.heap import Heap
@@ -6,7 +7,7 @@ from data_structures.trees.heap import Heap
 class TestHeap(TestCase):
     def setUp(self) -> None:
         self.heap = Heap()
-        self.sample_data = [15, 10, 3, 8, 12, 9, 4, 1, 24]
+        self.sample_data = [1, 10, 3, 8, 12, 9, 4, 15, 24]
 
     def insert_items(self):
         for number in self.sample_data:
@@ -22,7 +23,7 @@ class TestHeap(TestCase):
         self.assertEqual(self.heap.size, 0)
         self.insert_items()
         self.assertEqual(self.heap.size, 9)
-        self.assertEqual(self.heap.heap, [24, 15, 9, 12, 10, 3, 4, 1, 8])
+        self.assertEqual(self.heap.heap, [24, 15, 9, 12, 8, 3, 4, 1, 10])
 
     def test_remove_empty_heap(self):
         self.assertEqual(self.heap.size, 0)
@@ -47,3 +48,15 @@ class TestHeap(TestCase):
         self.assertEqual(self.heap.size, 0)
         sorted_data = self.heap.heap_sort_desc([*self.sample_data])
         self.assertEqual(sorted_data, sorted(self.sample_data, reverse=True))
+
+    def test_heapify(self):
+        self.assertEqual(self.heap.size, 0)
+        data = Heap.heapify([*self.sample_data])
+        self.assertEqual(data, [24, 15, 9, 10, 12, 3, 4, 1, 8])
+
+    def test_kth_largest_element(self):
+        self.assertEqual(self.heap.size, 0)
+        self.assertEqual(
+            self.heap.kth_largest_element(self.sample_data, 3),
+            12
+        )

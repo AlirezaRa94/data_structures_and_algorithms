@@ -62,8 +62,7 @@ class Heap:
             self._swap(index, parent_index)
             index = parent_index
 
-    def _bubble_down(self):
-        index = 0
+    def _bubble_down(self, index: int):
         max_child_index, max_child = self._max_child(index)
         while self.heap[index] < max_child:
             self._swap(index, max_child_index)
@@ -84,11 +83,10 @@ class Heap:
         removed_item = self.heap.pop()
         self.size -= 1
         if self.size > 0:
-            self._bubble_down()
+            self._bubble_down(0)
         return removed_item
 
     def heap_sort_asc(self, numbers: list):
-        self.heap = list()
         n = len(numbers)
         for number in numbers:
             self.insert(number)
@@ -97,10 +95,43 @@ class Heap:
         return numbers
 
     def heap_sort_desc(self, numbers: list):
-        self.heap = list()
         n = len(numbers)
         for number in numbers:
             self.insert(number)
         for i in range(n):
             numbers[i] = self.remove()
         return numbers
+
+    @staticmethod
+    def heapify(numbers: list):
+        def _heapify(array: list, index: int, last_non_leaf: int):
+            largest = index
+            left = index * 2 + 1
+            right = index * 2 + 2
+            if left < len(array) and array[left] > array[largest]:
+                largest = left
+            if right < len(array) and array[right] > array[largest]:
+                largest = right
+
+            if index != largest:
+                array[index], array[largest] = array[largest], array[index]
+                if largest <= last_non_leaf:
+                    _heapify(array, largest, last_non_leaf)
+
+        # n is the index of the last non-leaf node which is the parent of the
+        # last node
+        n = len(numbers) // 2 - 1
+        for i in range(n, -1, -1):
+            _heapify(numbers, i, n)
+
+        return numbers
+
+    def kth_largest_element(self, numbers: list, k: int):
+        if len(numbers) < k:
+            return
+        for number in numbers:
+            self.insert(number)
+
+        for i in range(k - 1):
+            self.remove()
+        return self.remove()
