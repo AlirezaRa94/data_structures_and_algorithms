@@ -105,10 +105,39 @@ class TestTrie(TestCase):
         )
 
     def test_contains_recursive(self):
-        pass
+        word = "bag"
+        self.trie.insert(word)
+        self.assertTrue(self.trie.contains_recursive(word))
+
+    def test_not_contains_recursive(self):
+        word_1 = "bag"
+        word_2 = "book"
+        self.trie.insert(word_2)
+        self.assertFalse(self.trie.contains_recursive(word_1))
+
+    def test_not_contains_recursive_not_end(self):
+        word_1 = "bag"
+        word_2 = "baggage"
+        self.trie.insert(word_2)
+        self.assertFalse(self.trie.contains_recursive(word_1))
 
     def test_count_words(self):
-        pass
+        sample_words = ["bag", "baggage", "car", "care", "delete"]
+        for word in sample_words:
+            self.trie.insert(word)
+        self.assertEqual(len(sample_words), self.trie.count_words())
+
+    def test_count_words_empty_trie(self):
+        self.assertEqual(0, self.trie.count_words())
 
     def test_longest_common_prefix(self):
-        pass
+        words_1 = ["car", "care"]
+        words_2 = ["care", "card"]
+        words_3 = ["car", "dog"]
+        words_4 = ["car"]
+        words_5 = []
+        self.assertEqual("car", Trie.longest_common_prefix(words_1))
+        self.assertEqual("car", Trie.longest_common_prefix(words_2))
+        self.assertEqual("", Trie.longest_common_prefix(words_3))
+        self.assertEqual("car", Trie.longest_common_prefix(words_4))
+        self.assertIsNone(Trie.longest_common_prefix(words_5))

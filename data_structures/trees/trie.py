@@ -26,11 +26,18 @@ class Trie:
         def remove_child(self, char: str):
             del self.children[char]
 
+        def remove_children(self):
+            self.children = dict()
+
         def get_child(self, char: str):
             return self.children.get(char)
 
         def get_children(self):
-            return self.children.values()
+            return list(self.children.values())
+
+        @property
+        def number_of_children(self):
+            return len(self.children)
 
     def __init__(self):
         self.root = self.Node(None)
@@ -51,11 +58,28 @@ class Trie:
             current = current.get_child(letter)
         return current.is_end_of_word
 
-    def contains_recursive(self):
-        pass
+    def _contains_recursive(self, word: str, node, index: int):
+        if index == len(word):
+            return node.is_end_of_word
+        if node.has_child(word[index]):
+            return self._contains_recursive(
+                word,
+                node.get_child(word[index]),
+                index + 1,
+            )
+        return False
+
+    def contains_recursive(self, word: str):
+        return self._contains_recursive(word, self.root, 0)
+
+    def _count_words(self, node):
+        number_of_words = 1 if node.is_end_of_word else 0
+        for child in node.get_children():
+            number_of_words += self._count_words(child)
+        return number_of_words
 
     def count_words(self):
-        pass
+        return self._count_words(self.root)
 
     def _remove(self, word: str, node, index: int):
         if index == len(word):
@@ -126,5 +150,19 @@ class Trie:
         last_node = self._get_last_node(start)
         return self._auto_completion(start, last_node, words)
 
-    def longest_common_prefix(self):
-        pass
+    @staticmethod
+    def longest_common_prefix(words: list):
+        if not words:
+            return
+        trie = Trie()
+        for word in words:
+            trie.insert(word)
+        current = trie.root
+        common_prefix = ""
+        while current and current.number_of_children == 1:
+            if current.is_end_of_word:
+                break
+            child = current.get_children()[0]
+            common_prefix += child.value
+            current = child
+        return common_prefix
