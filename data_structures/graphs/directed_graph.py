@@ -1,6 +1,7 @@
 """
 Implementing Directed Graph Data Structure Using Adjacency List
 """
+from collections import deque
 from typing import Dict, Set
 
 
@@ -57,14 +58,16 @@ class DirectedGraph:
                 self._depth_first_traversal(node, visited)
 
     def depth_first_traversal(self, start: str):
+        print("Depth First Traversal")
         if start not in self:
             return
         return self._depth_first_traversal(start, set())
 
     def depth_first_traversal_iterative(self, start: str):
+        print("Depth First Traversal Iterative")
         if start not in self:
             return
-        stack = list()
+        stack = deque()
         visited = set()
         stack.append(start)
         while len(stack) > 0:
@@ -76,18 +79,19 @@ class DirectedGraph:
                     stack.append(node)
 
     def breadth_first_traversal(self, start: str):
+        print("Breadth First Traversal")
         if start not in self:
             return
-        queue = list()
+        queue = deque()
         visited = set()
         queue.append(start)
         while len(queue) > 0:
-            current = queue.pop()
+            current = queue.popleft()
             if current not in visited:
                 print(current)
                 visited.add(current)
                 for node in self.get_connected_nodes(current):
-                    queue.insert(0, node)
+                    queue.append(node)
 
     def print_graph(self):
         for node in self.adjacency_list:
