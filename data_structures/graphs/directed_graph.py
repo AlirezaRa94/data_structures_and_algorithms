@@ -49,6 +49,46 @@ class DirectedGraph:
         if v2 in neighbors:
             self.adjacency_list[v1].remove(v2)
 
+    def _depth_first_traversal(self, start: str, visited: Set):
+        if start not in visited:
+            print(start)
+            visited.add(start)
+            for node in self.get_connected_nodes(start):
+                self._depth_first_traversal(node, visited)
+
+    def depth_first_traversal(self, start: str):
+        if start not in self:
+            return
+        return self._depth_first_traversal(start, set())
+
+    def depth_first_traversal_iterative(self, start: str):
+        if start not in self:
+            return
+        stack = list()
+        visited = set()
+        stack.append(start)
+        while len(stack) > 0:
+            current = stack.pop()
+            if current not in visited:
+                print(current)
+                visited.add(current)
+                for node in self.get_connected_nodes(current):
+                    stack.append(node)
+
+    def breadth_first_traversal(self, start: str):
+        if start not in self:
+            return
+        queue = list()
+        visited = set()
+        queue.append(start)
+        while len(queue) > 0:
+            current = queue.pop()
+            if current not in visited:
+                print(current)
+                visited.add(current)
+                for node in self.get_connected_nodes(current):
+                    queue.insert(0, node)
+
     def print_graph(self):
         for node in self.adjacency_list:
             print(f"{node} is connected with: {self.adjacency_list[node]}")

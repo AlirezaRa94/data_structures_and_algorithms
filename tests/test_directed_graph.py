@@ -67,3 +67,24 @@ class TestDirectedGraph(TestCase):
         self.graph.remove_edge(nodes[0], nodes[1])
         self.assertNotIn(nodes[1], self.graph.get_connected_nodes(nodes[0]))
         self.assertIn(nodes[0], self.graph.get_connected_nodes(nodes[1]))
+
+    def base_test_traversal(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge(nodes[0], nodes[1])
+        self.graph.add_edge(nodes[0], nodes[2])
+        self.graph.add_edge(nodes[1], nodes[3])
+        self.graph.add_edge(nodes[3], nodes[2])
+        self.graph.print_graph()
+
+    def test_depth_first_traversal(self):
+        self.base_test_traversal()
+        self.graph.depth_first_traversal("A")
+
+    def test_depth_first_traversal_iterative(self):
+        self.base_test_traversal()
+        self.graph.depth_first_traversal_iterative("C")
+
+    def test_breadth_first_traversal(self):
+        self.base_test_traversal()
+        self.graph.breadth_first_traversal("A")
