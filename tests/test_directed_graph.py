@@ -37,14 +37,14 @@ class TestDirectedGraph(TestCase):
         self.graph.remove_node(nodes[1])
         self.assertIn(nodes[0], self.graph)
         self.assertNotIn(nodes[1], self.graph)
-        self.assertNotIn(nodes[1], self.graph.get_connected_nodes(nodes[0]))
+        self.assertNotIn(nodes[1], self.graph.get_neighbors(nodes[0]))
 
     def test_add_edge(self):
         nodes = ["A", "B"]
         self.add_nodes(nodes)
         self.graph.add_edge(nodes[0], nodes[1])
-        self.assertIn(nodes[1], self.graph.get_connected_nodes(nodes[0]))
-        self.assertNotIn(nodes[0], self.graph.get_connected_nodes(nodes[1]))
+        self.assertIn(nodes[1], self.graph.get_neighbors(nodes[0]))
+        self.assertNotIn(nodes[0], self.graph.get_neighbors(nodes[1]))
 
     def test_add_edge_node_not_exists(self):
         nodes = ["A", "B"]
@@ -56,7 +56,7 @@ class TestDirectedGraph(TestCase):
             )
             self.assertNotIn(
                 nodes[1],
-                self.graph.get_connected_nodes(nodes[0]),
+                self.graph.get_neighbors(nodes[0]),
             )
 
     def test_remove_edge(self):
@@ -65,8 +65,8 @@ class TestDirectedGraph(TestCase):
         self.graph.add_edge(nodes[0], nodes[1])
         self.graph.add_edge(nodes[1], nodes[0])
         self.graph.remove_edge(nodes[0], nodes[1])
-        self.assertNotIn(nodes[1], self.graph.get_connected_nodes(nodes[0]))
-        self.assertIn(nodes[0], self.graph.get_connected_nodes(nodes[1]))
+        self.assertNotIn(nodes[1], self.graph.get_neighbors(nodes[0]))
+        self.assertIn(nodes[0], self.graph.get_neighbors(nodes[1]))
 
     def base_test_traversal(self):
         nodes = ["A", "B", "C", "D"]
@@ -75,7 +75,6 @@ class TestDirectedGraph(TestCase):
         self.graph.add_edge(nodes[0], nodes[2])
         self.graph.add_edge(nodes[1], nodes[3])
         self.graph.add_edge(nodes[3], nodes[2])
-        self.graph.print_graph()
 
     def test_depth_first_traversal(self):
         self.base_test_traversal()
@@ -88,3 +87,33 @@ class TestDirectedGraph(TestCase):
     def test_breadth_first_traversal(self):
         self.base_test_traversal()
         self.graph.breadth_first_traversal("A")
+
+    def test_topological_sorting(self):
+        nodes = ["X", "A", "B", "P"]
+        self.add_nodes(nodes)
+        self.graph.add_edge(nodes[0], nodes[1])
+        self.graph.add_edge(nodes[0], nodes[2])
+        self.graph.add_edge(nodes[1], nodes[3])
+        self.graph.add_edge(nodes[2], nodes[3])
+        sorted_graph = self.graph.topological_sorting()
+        self.assertEqual(set(sorted_graph), set(nodes))
+        self.assertTrue(nodes[0] == sorted_graph[0])
+        self.assertTrue(nodes[-1 == sorted_graph[-1]])
+
+    def test_has_cycle(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge(nodes[0], nodes[1])
+        self.graph.add_edge(nodes[1], nodes[2])
+        self.graph.add_edge(nodes[2], nodes[0])
+        self.graph.add_edge(nodes[3], nodes[0])
+        self.assertTrue(self.graph.has_cycle())
+
+    def test_has_not_cycle(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge(nodes[0], nodes[1])
+        self.graph.add_edge(nodes[1], nodes[2])
+        self.graph.add_edge(nodes[0], nodes[2])
+        self.graph.add_edge(nodes[3], nodes[0])
+        self.assertFalse(self.graph.has_cycle())

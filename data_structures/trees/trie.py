@@ -162,7 +162,7 @@ class Trie:
         while current and current.number_of_children == 1:
             if current.is_end_of_word:
                 break
-            child = current.get_children()[0]
+            child = current.get_children().pop()
             common_prefix += child.value
             current = child
         return common_prefix

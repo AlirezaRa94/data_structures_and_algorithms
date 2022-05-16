@@ -32,7 +32,7 @@ class DirectedGraph:
             if label in adj_list:
                 adj_list.remove(label)
 
-    def get_connected_nodes(self, label: str):
+    def get_neighbors(self, label: str):
         self._check_and_error_node_not_exists(label)
         return self.adjacency_list[label]
 
@@ -54,7 +54,7 @@ class DirectedGraph:
         if start not in visited:
             print(start)
             visited.add(start)
-            for node in self.get_connected_nodes(start):
+            for node in self.get_neighbors(start):
                 self._depth_first_traversal(node, visited)
 
     def depth_first_traversal(self, start: str):
@@ -75,7 +75,7 @@ class DirectedGraph:
             if current not in visited:
                 print(current)
                 visited.add(current)
-                for node in self.get_connected_nodes(current):
+                for node in self.get_neighbors(current):
                     stack.append(node)
 
     def breadth_first_traversal(self, start: str):
@@ -90,8 +90,47 @@ class DirectedGraph:
             if current not in visited:
                 print(current)
                 visited.add(current)
-                for node in self.get_connected_nodes(current):
+                for node in self.get_neighbors(current):
                     queue.append(node)
+
+    def _topological_sorting(self, start, visited: Set, stack: deque):
+        if start not in visited:
+            visited.add(start)
+            for neighbor in self.get_neighbors(start):
+                self._topological_sorting(neighbor, visited, stack)
+            stack.append(start)
+
+    def topological_sorting(self):
+        visited = set()
+        stack = deque()
+        for node in self.adjacency_list:
+            self._topological_sorting(node, visited, stack)
+        stack.reverse()
+        return stack
+
+    def _has_cycle(self, node, all_: Set, visiting: Set, visited: Set):
+        all_.remove(node)
+        visiting.add(node)
+        for neighbor in self.get_neighbors(node):
+            if neighbor not in visited:
+                if neighbor in visiting:
+                    return True
+                if self._has_cycle(neighbor, all_, visiting, visited):
+                    return True
+
+        visiting.remove(node)
+        visited.add(node)
+        return False
+
+    def has_cycle(self):
+        all_ = set(self.adjacency_list.keys())
+        visiting = set()
+        visited = set()
+        while len(all_) > 0:
+            node = next(iter(all_))
+            if self._has_cycle(node, all_, visiting, visited):
+                return True
+        return False
 
     def print_graph(self):
         for node in self.adjacency_list:
