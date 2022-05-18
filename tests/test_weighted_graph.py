@@ -96,3 +96,30 @@ class TestWeightedGraph(TestCase):
             "C->A",
             {str(edge) for edge in self.graph.get_edges(nodes[2])}
         )
+
+    def base_test_shortest_path(self):
+        nodes = ["A", "B", "C", "D", "E"]
+        self.add_nodes(nodes)
+        self.graph.add_edge("A", "B", 3)
+        self.graph.add_edge("A", "C", 4)
+        self.graph.add_edge("A", "D", 2)
+        self.graph.add_edge("B", "D", 6)
+        self.graph.add_edge("C", "D", 1)
+        self.graph.add_edge("B", "E", 1)
+        self.graph.add_edge("D", "E", 5)
+
+    def test_find_shortest_path(self):
+        self.base_test_shortest_path()
+        self.assertEqual("ADC", self.graph.find_shortest_path("A", "C"))
+        self.assertEqual("CDAB", self.graph.find_shortest_path("C", "B"))
+
+    def test_find_shortest_path_using_priority_queue(self):
+        self.base_test_shortest_path()
+        self.assertEqual(
+            "ADC",
+            self.graph.find_shortest_path_using_priority_queue("A", "C")
+        )
+        self.assertEqual(
+            "CDAB",
+            self.graph.find_shortest_path_using_priority_queue("C", "B")
+        )
