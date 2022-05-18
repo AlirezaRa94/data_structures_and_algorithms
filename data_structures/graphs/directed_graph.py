@@ -39,9 +39,7 @@ class DirectedGraph:
     def add_edge(self, v1: str, v2: str):
         self._check_and_error_node_not_exists(v1)
         self._check_and_error_node_not_exists(v2)
-        neighbors = self.adjacency_list[v1]
-        if v2 not in neighbors:
-            self.adjacency_list[v1].add(v2)
+        self.adjacency_list[v1].add(v2)
 
     def remove_edge(self, v1: str, v2: str):
         if v1 not in self or v2 not in self:

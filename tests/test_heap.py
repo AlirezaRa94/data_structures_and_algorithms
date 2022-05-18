@@ -1,4 +1,3 @@
-import heapq
 from unittest import TestCase
 
 from data_structures.trees.heap import Heap
