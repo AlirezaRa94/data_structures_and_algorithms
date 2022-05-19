@@ -22,6 +22,9 @@ class WeightedGraph:
     def __contains__(self, item):
         return item in self.adjacency_list
 
+    def _is_empty(self):
+        return len(self.adjacency_list) == 0
+
     def _check_and_error_node_exists(self, label: str):
         if label in self:
             raise ValueError(f"{label} already exists in the graph!")
@@ -65,7 +68,8 @@ class WeightedGraph:
 
     def print_graph(self):
         for node in self.adjacency_list:
-            print(f"The edges of {node} are: {self.get_edges(node)}")
+            edges = {str(edge) for edge in self.get_edges(node)}
+            print(f"The edges of {node} are: {edges}")
 
     @staticmethod
     def _min_distance(distances: dict, not_visited: set):
@@ -131,3 +135,44 @@ class WeightedGraph:
                         previous[neighbor] = curr
                         priority_queue.put((dist, neighbor))
         return self._build_path(to, previous)
+
+    def _has_cycle(self, node: str, previous, visited: set):
+        visited.add(node)
+        for edge in self.get_edges(node):
+            neighbor = edge.v2
+            if neighbor != previous:
+                if neighbor in visited or self._has_cycle(
+                        neighbor, node, visited):
+                    return True
+        return False
+
+    def has_cycle(self):
+        visited = set()
+        for node in self.adjacency_list.keys():
+            if node not in visited and self._has_cycle(node, None, visited):
+                return True
+        return False
+
+    def find_minimum_spanning_tree(self):
+        tree = WeightedGraph()
+        if self._is_empty():
+            return
+        priority_queue = PriorityQueue()
+        start_node = next(iter(self.adjacency_list.keys()))
+        for edge in self.get_edges(start_node):
+            priority_queue.put((edge.weight, edge.v1, edge.v2))
+        tree.add_node(start_node)
+
+        while len(tree.adjacency_list) < len(self.adjacency_list):
+            if priority_queue.empty():
+                return
+            weight, source, next_node = priority_queue.get()
+            if next_node not in tree:
+                tree.add_node(next_node)
+                tree.add_edge(source, next_node, weight)
+
+                for edge in self.get_edges(next_node):
+                    if edge.v2 not in tree:
+                        priority_queue.put((edge.weight, edge.v1, edge.v2))
+
+        return tree

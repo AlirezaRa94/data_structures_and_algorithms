@@ -123,3 +123,41 @@ class TestWeightedGraph(TestCase):
             "CDAB",
             self.graph.find_shortest_path_using_priority_queue("C", "B")
         )
+
+    def test_has_not_cycle(self):
+        nodes = ["A", "B", "C"]
+        self.add_nodes(nodes)
+        self.graph.add_edge("A", "B", 1)
+        self.graph.add_edge("B", "C", 1)
+        self.assertFalse(self.graph.has_cycle())
+
+    def test_has_cycle(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge("A", "B", 1)
+        self.graph.add_edge("B", "C", 1)
+        self.graph.add_edge("C", "D", 1)
+        self.graph.add_edge("C", "A", 1)
+        self.assertTrue(self.graph.has_cycle())
+
+    def test_find_minimum_spanning_tree(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge("A", "B", 3)
+        self.graph.add_edge("B", "D", 4)
+        self.graph.add_edge("C", "D", 5)
+        self.graph.add_edge("A", "C", 1)
+        self.graph.add_edge("B", "C", 2)
+        tree = self.graph.find_minimum_spanning_tree()
+        tree.print_graph()
+
+    def test_find_minimum_spanning_tree_not_connected(self):
+        nodes = ["A", "B", "C", "D"]
+        self.add_nodes(nodes)
+        self.graph.add_edge("A", "B", 3)
+        self.graph.add_edge("A", "C", 1)
+        self.graph.add_edge("B", "C", 2)
+        self.assertIsNone(self.graph.find_minimum_spanning_tree())
+
+    def test_find_minimum_spanning_tree_no_nodes(self):
+        self.assertIsNone(self.graph.find_minimum_spanning_tree())
