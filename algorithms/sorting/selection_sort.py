@@ -3,7 +3,7 @@ Selection Sort Algorithm.
 """
 
 
-def selection_sort(arr):
+def selection_sort(arr: list):
     n = len(arr)
     for i in range(n):
         min_index = i
@@ -12,6 +12,3 @@ def selection_sort(arr):
                 min_index = j
         arr[i], arr[min_index] = arr[min_index], arr[i]
     return arr
-
-
-print(selection_sort([4, 7, 1, 12, 9, 3, 5]))

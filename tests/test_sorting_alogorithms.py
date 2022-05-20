@@ -1,6 +1,9 @@
+from typing import Callable
 from unittest import TestCase
 
 from algorithms.sorting.bubble_sort import bubble_sort
+from algorithms.sorting.insertion_sort import insertion_sort
+from algorithms.sorting.selection_sort import selection_sort
 
 
 class TestSortingAlgorithms(TestCase):
@@ -10,8 +13,17 @@ class TestSortingAlgorithms(TestCase):
         self.one_data = [0]
         self.empty_data = []
 
+    def base_test_sort(self, function: Callable):
+        self.assertEqual(function([*self.long_data]), sorted(self.long_data))
+        self.assertEqual(function([*self.two_data]), sorted(self.two_data))
+        self.assertEqual(function([*self.one_data]), sorted(self.one_data))
+        self.assertEqual(function([*self.empty_data]), sorted(self.empty_data))
+
     def test_bubble_sort(self):
-        self.assertEqual(bubble_sort(self.long_data), sorted(self.long_data))
-        self.assertEqual(bubble_sort(self.two_data), sorted(self.two_data))
-        self.assertEqual(bubble_sort(self.one_data), sorted(self.one_data))
-        self.assertEqual(bubble_sort(self.empty_data), sorted(self.empty_data))
+        self.base_test_sort(bubble_sort)
+
+    def test_selection_sort(self):
+        self.base_test_sort(selection_sort)
+
+    def test_insertion_sort(self):
+        self.base_test_sort(insertion_sort)
