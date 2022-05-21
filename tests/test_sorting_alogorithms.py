@@ -4,6 +4,7 @@ from unittest import TestCase
 from algorithms.sorting.bubble_sort import bubble_sort
 from algorithms.sorting.insertion_sort import insertion_sort
 from algorithms.sorting.merge_sort import MergeSort
+from algorithms.sorting.quick_sort import QuickSort
 from algorithms.sorting.selection_sort import selection_sort
 
 
@@ -31,3 +32,6 @@ class TestSortingAlgorithms(TestCase):
 
     def test_merge_sort(self):
         self.base_test_sort(MergeSort().sort)
+
+    def test_quick_sort(self):
+        self.base_test_sort(QuickSort().sort)
