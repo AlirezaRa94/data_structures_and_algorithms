@@ -2,6 +2,7 @@ from typing import Callable
 from unittest import TestCase
 
 from algorithms.sorting.bubble_sort import bubble_sort
+from algorithms.sorting.counting_sort import counting_sort
 from algorithms.sorting.insertion_sort import insertion_sort
 from algorithms.sorting.merge_sort import MergeSort
 from algorithms.sorting.quick_sort import QuickSort
@@ -10,7 +11,7 @@ from algorithms.sorting.selection_sort import selection_sort
 
 class TestSortingAlgorithms(TestCase):
     def setUp(self) -> None:
-        self.long_data = [12, -3, 34, 0, 22, 13, 11, 5, 54, 10, 13]
+        self.long_data = [12, 3, 34, 0, 22, 13, 11, 5, 54, 10, 13]
         self.two_data = [1, 0]
         self.one_data = [0]
         self.empty_data = []
@@ -35,3 +36,6 @@ class TestSortingAlgorithms(TestCase):
 
     def test_quick_sort(self):
         self.base_test_sort(QuickSort().sort)
+
+    def test_counting_sort(self):
+        self.base_test_sort(counting_sort)
