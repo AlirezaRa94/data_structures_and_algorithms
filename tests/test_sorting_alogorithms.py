@@ -2,6 +2,7 @@ from typing import Callable
 from unittest import TestCase
 
 from algorithms.sorting.bubble_sort import bubble_sort
+from algorithms.sorting.bucket_sort import bucket_sort
 from algorithms.sorting.counting_sort import counting_sort
 from algorithms.sorting.insertion_sort import insertion_sort
 from algorithms.sorting.merge_sort import MergeSort
@@ -39,3 +40,6 @@ class TestSortingAlgorithms(TestCase):
 
     def test_counting_sort(self):
         self.base_test_sort(counting_sort)
+
+    def test_bucket_sort(self):
+        self.base_test_sort(bucket_sort)
