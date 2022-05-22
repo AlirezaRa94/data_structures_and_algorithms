@@ -3,6 +3,7 @@ from unittest import TestCase
 
 from algorithms.searching.binary_search import BinarySearch
 from algorithms.searching.linear_search import linear_search
+from algorithms.searching.ternary_search import TernarySearch
 
 
 class TestSearchingAlgorithms(TestCase):
@@ -26,3 +27,9 @@ class TestSearchingAlgorithms(TestCase):
 
     def test_binary_search_recursive(self):
         self.base_test(BinarySearch().recursive)
+
+    def test_ternary_search_iterative(self):
+        self.base_test(TernarySearch.iterative)
+
+    def test_ternary_search_recursive(self):
+        self.base_test(TernarySearch().recursive)
