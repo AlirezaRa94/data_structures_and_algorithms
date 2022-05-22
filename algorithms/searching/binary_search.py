@@ -3,15 +3,33 @@ Binary Search Algorithm.
 """
 
 
-def binary_search(data: list, target):
-    low = 0
-    high = len(data) - 1
-    while low <= high:
-        mid = (low + high) // 2
+class BinarySearch:
+    @staticmethod
+    def iterative(data: list, target):
+        left = 0
+        right = len(data) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if target == data[mid]:
+                return mid
+            elif target < data[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return -1
+
+    def _recursive(self, data: list, target, left: int, right: int):
+        if left > right:
+            return -1
+        mid = (left + right) // 2
         if target == data[mid]:
-            return True
+            return mid
         elif target < data[mid]:
-            high = mid - 1
+            return self._recursive(data, target, left, mid - 1)
         else:
-            low = mid + 1
-    return False
+            return self._recursive(data, target, mid + 1, right)
+
+    def recursive(self, data: list, target):
+        left = 0
+        right = len(data) - 1
+        return self._recursive(data, target, left, right)
