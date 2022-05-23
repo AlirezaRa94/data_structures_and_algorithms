@@ -2,6 +2,7 @@ from typing import Callable
 from unittest import TestCase
 
 from algorithms.searching.binary_search import BinarySearch
+from algorithms.searching.exponential_search import exponential_search
 from algorithms.searching.jump_search import jump_search
 from algorithms.searching.linear_search import linear_search
 from algorithms.searching.ternary_search import TernarySearch
@@ -37,3 +38,6 @@ class TestSearchingAlgorithms(TestCase):
 
     def test_jump_search(self):
         self.base_test(jump_search)
+
+    def test_exponential_search(self):
+        self.base_test(exponential_search)
