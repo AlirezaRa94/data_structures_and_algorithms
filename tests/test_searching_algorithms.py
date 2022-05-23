@@ -2,6 +2,7 @@ from typing import Callable
 from unittest import TestCase
 
 from algorithms.searching.binary_search import BinarySearch
+from algorithms.searching.jump_search import jump_search
 from algorithms.searching.linear_search import linear_search
 from algorithms.searching.ternary_search import TernarySearch
 
@@ -13,8 +14,8 @@ class TestSearchingAlgorithms(TestCase):
         self.empty_data = []
 
     def base_test(self, function: Callable):
-        self.assertEqual(self.long_data.index(2), function(self.long_data, 2))
-        self.assertEqual(-1, function(self.long_data, -2))
+        self.assertEqual(self.long_data.index(12), function(self.long_data, 12))
+        self.assertEqual(-1, function(self.long_data, -6))
         self.assertEqual(self.one_data.index(0), function(self.one_data, 0))
         self.assertEqual(-1, function(self.one_data, 2))
         self.assertEqual(-1, function(self.empty_data, 2))
@@ -33,3 +34,6 @@ class TestSearchingAlgorithms(TestCase):
 
     def test_ternary_search_recursive(self):
         self.base_test(TernarySearch().recursive)
+
+    def test_jump_search(self):
+        self.base_test(jump_search)
