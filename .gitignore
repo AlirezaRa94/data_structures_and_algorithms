@@ -1,4 +1,5 @@
 .idea/
 console*.py
+console*.cpp
 __pycache__
 _trial_temp/
