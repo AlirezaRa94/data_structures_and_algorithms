@@ -1,5 +1,6 @@
 .idea/
 console*.py
 console*.cpp
+*.sql
 __pycache__
 _trial_temp/
