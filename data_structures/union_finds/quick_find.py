@@ -7,7 +7,7 @@ class QuickFindUF:
     def __init__(self, n):
         self.ids = [i for i in range(n)]
 
-    def find(self, p: int, q: int):
+    def connected(self, p: int, q: int):
         return self.ids[p] == self.ids[q]
 
     def union(self, p: int, q: int):

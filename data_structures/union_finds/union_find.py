@@ -8,18 +8,18 @@ class UnionFind:
         self.ids = list(range(n))
         self.sz = [1] * n
 
-    def root(self, i: int):
+    def find(self, i: int):
         while self.ids[i] != i:
             self.ids[i] = self.ids[self.ids[i]]
             i = self.ids[i]
         return i
 
-    def find(self, p: int, q: int):
-        return self.root(p) == self.root(q)
+    def connected(self, p: int, q: int):
+        return self.find(p) == self.find(q)
 
     def union(self, p: int, q: int):
-        i = self.root(p)
-        j = self.root(q)
+        i = self.find(p)
+        j = self.find(q)
         if i != j:
             if self.sz[i] < self.sz[j]:
                 self.ids[i] = j
