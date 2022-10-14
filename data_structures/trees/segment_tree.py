@@ -26,8 +26,10 @@ class SegmentTree:
             ind >>= 1
 
     def query(self, left, right):
+        # include left and exclude right
         left += self.n
         right += self.n
+
         s = 0
         while left < right:
             if left & 1:

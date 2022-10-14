@@ -70,10 +70,10 @@ class DirectedGraph:
         stack.append(start)
         while len(stack) > 0:
             current = stack.pop()
-            if current not in visited:
-                print(current)
-                visited.add(current)
-                for node in self.get_neighbors(current):
+            print(current)
+            visited.add(current)
+            for node in self.get_neighbors(current):
+                if node not in visited:
                     stack.append(node)
 
     def breadth_first_traversal(self, start: str):
@@ -92,17 +92,18 @@ class DirectedGraph:
                     queue.append(node)
 
     def _topological_sorting(self, start, visited: Set, stack: deque):
-        if start not in visited:
-            visited.add(start)
-            for neighbor in self.get_neighbors(start):
+        visited.add(start)
+        for neighbor in self.get_neighbors(start):
+            if neighbor not in visited:
                 self._topological_sorting(neighbor, visited, stack)
-            stack.append(start)
+        stack.append(start)
 
     def topological_sorting(self):
         visited = set()
         stack = deque()
         for node in self.adjacency_list:
-            self._topological_sorting(node, visited, stack)
+            if node not in visited:
+                self._topological_sorting(node, visited, stack)
         stack.reverse()
         return stack
 
