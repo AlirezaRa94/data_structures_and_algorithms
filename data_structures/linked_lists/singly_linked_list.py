@@ -77,8 +77,8 @@ class LinkedList:
 
     def delete_at_pos(self, pos: int):
         """
-            Delete a node based on the given key from the linked list
-            :param pos: The position of the node which we want to delete.
+        Delete a node based on the given key from the linked list
+        :param pos: The position of the node which we want to delete.
         """
         prev = None
         cur_node = self.head
@@ -102,10 +102,11 @@ class LinkedList:
         The print_list method will print out the entries of a linked list.
         """
         cur_node = self.head
+        values = list()
         while cur_node:
-            print(' ' + str(cur_node.data), end='')
+            values.append(str(cur_node.data))
             cur_node = cur_node.next
-        print()
+        print(' '.join(values))
 
     def length(self):
         """
@@ -299,7 +300,8 @@ class LinkedList:
 
     def sum(self, llist):
         """
-        This method will add another linked list to the linked list
+        This method will add the values of another linked list to the values of
+        the linked list
         :param llist: The linked list that should add to the linked list
         """
         prev = None
@@ -309,18 +311,18 @@ class LinkedList:
         while p or q:
             i = p.data if p else 0
             j = q.data if q else 0
-            s = i + j + carry
-            if s >= 10:
+            _sum = i + j + carry
+            if _sum >= 10:
                 carry = 1
-                s %= 10
+                _sum %= 10
             else:
                 carry = 0
             if p:
-                p.data = s
+                p.data = _sum
                 prev = p
                 p = p.next
             else:
-                prev.next = Node(s)
+                prev.next = Node(_sum)
                 prev = prev.next
             if q:
                 q = q.next
