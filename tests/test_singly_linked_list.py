@@ -16,8 +16,10 @@ class TestSinglyLinkedList(TestCase):
             " ".join(map(str, items))
         )
 
-    def append_items(self):
-        for number in self.sample_data:
+    def append_items(self, items=None):
+        if items is None:
+            items = self.sample_data
+        for number in items:
             self.linked_list.append(number)
 
     def prepend_items(self):
@@ -111,3 +113,13 @@ class TestSinglyLinkedList(TestCase):
         self.linked_list.print_list()
         rotated = self.sample_data[ind:] + self.sample_data[:ind]
         self.assert_valid_print(rotated)
+
+    def test_merge_sort(self):
+        data1 = list(sorted(self.sample_data))
+        self.append_items(data1)
+        data2 = [3, 4, 5, 8, 13]
+        list2 = LinkedList()
+        for item in data2:
+            list2.append(item)
+        self.linked_list.merge_sorted(list2)
+        self.assert_valid_print(sorted(data1 + data2))
