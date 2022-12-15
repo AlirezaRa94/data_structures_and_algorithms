@@ -9,13 +9,6 @@ class TestSinglyLinkedList(TestCase):
         self.linked_list = LinkedList()
         self.sample_data = [1, 10, 3, 8, 12, 9, 4, 15, 24]
 
-    @mock.patch('builtins.print')
-    def assert_valid_print(self, items, mock_print):
-        self.linked_list.print_list()
-        mock_print.assert_called_with(
-            " ".join(map(str, items))
-        )
-
     def append_items(self, items=None):
         if items is None:
             items = self.sample_data
@@ -25,6 +18,13 @@ class TestSinglyLinkedList(TestCase):
     def prepend_items(self):
         for number in self.sample_data:
             self.linked_list.prepend(number)
+
+    @mock.patch('builtins.print')
+    def assert_valid_print(self, items, mock_print):
+        self.linked_list.print_list()
+        mock_print.assert_called_with(
+            " ".join(map(str, items))
+        )
 
     def test_append_empty_linked_list(self):
         self.assertIsNone(self.linked_list.head)
@@ -123,3 +123,39 @@ class TestSinglyLinkedList(TestCase):
             list2.append(item)
         self.linked_list.merge_sorted(list2)
         self.assert_valid_print(sorted(data1 + data2))
+
+    def test_remove_duplicates(self):
+        data = copy.copy(self.sample_data)
+        data.append(data[0])
+        self.append_items(data)
+        self.linked_list.remove_duplicates()
+        self.assert_valid_print(self.sample_data)
+
+    def test_get_nth_from_last(self):
+        self.append_items()
+        n = 5
+        nth_item = self.linked_list.get_nth_from_last(n)
+        self.assertEqual(nth_item, self.sample_data[-n])
+
+    def test_count_occurrences(self):
+        self.append_items()
+        num = 5
+        counted = self.linked_list.count_occurrences(num)
+        self.assertEqual(counted, self.sample_data.count(num))
+
+    def test_is_palindrome_false(self):
+        self.append_items()
+        self.assertFalse(self.linked_list.is_palindrome())
+
+    def test_is_palindrome_true(self):
+        data = copy.copy(self.sample_data)
+        data.extend(self.sample_data[::-1])
+        self.append_items(data)
+        self.assertTrue(self.linked_list.is_palindrome())
+
+    def test_move_tail_to_head(self):
+        self.append_items()
+        self.linked_list.move_tail_to_head()
+        self.linked_list.print_list()
+        data = [self.sample_data[-1]] + self.sample_data[:-1]
+        self.assert_valid_print(data)

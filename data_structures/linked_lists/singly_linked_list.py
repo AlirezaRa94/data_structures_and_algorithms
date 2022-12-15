@@ -276,11 +276,12 @@ class LinkedList:
         This method will determine whether the linked list is palindrome or
         not.
         """
-        s = ""
+        s = list()
         cur = self.head
         while cur:
-            s += str(cur.data)
+            s.append(cur.data)
             cur = cur.next
+        print(s)
         return s == s[::-1]
 
     def move_tail_to_head(self):
@@ -297,32 +298,3 @@ class LinkedList:
         cur.next = self.head
         self.head = cur
         prev.next = None
-
-    def sum(self, llist):
-        """
-        This method will add the values of another linked list to the values of
-        the linked list
-        :param llist: The linked list that should add to the linked list
-        """
-        prev = None
-        p = self.head
-        q = llist.head
-        carry = 0
-        while p or q:
-            i = p.data if p else 0
-            j = q.data if q else 0
-            _sum = i + j + carry
-            if _sum >= 10:
-                carry = 1
-                _sum %= 10
-            else:
-                carry = 0
-            if p:
-                p.data = _sum
-                prev = p
-                p = p.next
-            else:
-                prev.next = Node(_sum)
-                prev = prev.next
-            if q:
-                q = q.next
