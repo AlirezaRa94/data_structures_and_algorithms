@@ -1,4 +1,4 @@
 # Data Structures and Algorithms
 Implementations of common data structures and algorithms in Python
 
-I also wrote some unit tests to test each part of the code
+Used the "unittest" module to write unit tests for each data structure and algorithm to ensure they work perfectly.
